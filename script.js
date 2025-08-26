@@ -48,22 +48,33 @@ const pokemons = [
     {name: 'Mewtwo', type: 'Psy', level: 70, img: 'mewtwo.png'}
 ];
 
+displayPokemon();
+
 function displayPokemon() {
     const pokeContainer = document.querySelector('.pokemon-container');
+    pokeContainer.innerHTML = ''; // vide le container avant affichage
 
-    for (let i = 0; i !== pokemons.length; i++) {
-        if (!pokemons[i].type.includes(',')) {
-            pokeContainer.innerHTML += `<p>${pokemons[i].name} <small>${pokemons[i].type.split(",")[0]}</small> </p>`;
-        } else {
-            pokeContainer.innerHTML += `<p>${pokemons[i].name} <small>${pokemons[i].type.split(",")[0]}</small>  
-            <small>${pokemons[i].type.split(",")[1]}</small> </p>`;
-        }
+    for (let i = 0; i < pokemons.length; i++) {
+        pokeContainer.innerHTML += generatePokemonCardHTML(pokemons[i]);
     }
+
     if (pokeContainer.children.length === 0) {
         pokeContainer.innerHTML = '<p>Dracaufeu a tout brûlé, aucun Pokémon ne correspond à ta recherche !</p>';
     }
-
 }
 
-displayPokemon();
 
+function generatePokemonCardHTML(pokemon) {
+    // Récupération des types en tableau
+    const types = pokemon.type.split(',').map(t => t.trim()).join(' / ');
+
+    // Retour du template HTML
+    return `
+        <div class="pokemon-card" style="background: #705898;">
+            <img src="images/${pokemon.img}" alt="${pokemon.name}">
+            <h2>${pokemon.name}</h2>
+            <div>Types: ${types}</div>
+            <div>Niveau: ${pokemon.level}</div>
+        </div>
+    `;
+}
